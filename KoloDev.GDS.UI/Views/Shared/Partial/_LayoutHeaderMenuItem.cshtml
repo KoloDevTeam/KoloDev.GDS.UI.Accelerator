@@ -1,0 +1,27 @@
+﻿@model KoloDev.GDS.UI.BaseModels.Configuration.Menu
+
+<li class="govuk-header__navigation-item">
+    @{
+        if(Model.Href.Length > 0)
+        {
+            <a class="govuk-header__link" href="@Model.Href">
+                @Model.Name
+            </a>
+        }
+        else
+        {
+            if (!string.IsNullOrEmpty(Model.Area))
+            {
+                <a class="govuk-header__link" asp-controller="@Model.Controller" asp-action="@Model.Action" asp-area="@Model.Area">
+                    @Model.Name
+                </a>
+            }
+            else
+            {
+                <a class="govuk-header__link" asp-controller="@Model.Controller" asp-action="@Model.Action">
+                    @Model.Name
+                </a>    
+            }
+        }
+    }
+</li>

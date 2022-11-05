@@ -1,0 +1,111 @@
+﻿@using KoloDev.GDS.UI.BaseModels.Configuration
+@using KoloDev.GDS.UI.Configurators.Base
+
+<section id="intro">
+    <gds-grid-row>
+        <gds-grid-column size="twoThirds">
+            <gds-heading size="xl">
+                Cookies
+            </gds-heading>
+        </gds-grid-column>
+    </gds-grid-row>
+</section>
+
+@if (ViewBag.content == null || ViewBag.content.Length == 0)
+{
+    
+}
+else
+{
+    <section id="content">
+        @Html.Raw(ViewBag.content)
+    </section>
+}
+
+<section id="cookies-form">
+    @if (!AssetConfiguration.FunctionalCookies && !AssetConfiguration.EssentialCookies && !AssetConfiguration.AnalyticsCookies)
+    {
+       
+    }
+    else
+    {
+        <form asp-controller="HelpAndInformation" asp-action="SubmitCookiePreference">
+            @if (AssetConfiguration.FunctionalCookies)
+            {
+                <div class="govuk-form-group">
+                    <fieldset class="govuk-fieldset">
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                        Do you want to accept functional cookies?
+                        </legend>
+                        <div class="govuk-radios" data-module="govuk-radios">
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="functional-cookies" name="functional" type="radio" value="yes">
+                                <label class="govuk-label govuk-radios__label" for="functional-cookies">
+                                Yes
+                                </label>
+                            </div>
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="functional-cookies-2" name="functional" type="radio" value="no" checked="">
+                                <label class="govuk-label govuk-radios__label" for="functional-cookies-2">
+                                No
+                                </label>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            }
+            @if (AssetConfiguration.AnalyticsCookies)
+            {
+                <div class="govuk-form-group">
+                    <fieldset class="govuk-fieldset">
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                        Do you want to accept analytics cookies?
+                        </legend>
+                        <div class="govuk-radios" data-module="govuk-radios">
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="analytics-cookies" name="analytics" type="radio" value="yes">
+                                <label class="govuk-label govuk-radios__label" for="analytics-cookies">
+                                Yes
+                                </label>
+                            </div>
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="analytics-cookies-2" name="analytics" type="radio" value="no" checked="">
+                                <label class="govuk-label govuk-radios__label" for="analytics-cookies-2">
+                                No
+                                </label>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            }
+            @if (AssetConfiguration.EssentialCookies)
+            {
+                <div class="govuk-form-group">
+                    <fieldset class="govuk-fieldset">
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                        Do you want to accept essential cookies?
+                        </legend>
+                        <div class="govuk-radios" data-module="govuk-radios">
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="essential-cookies" name="essential" type="radio" value="yes">
+                                <label class="govuk-label govuk-radios__label" for="essential-cookies">
+                                Yes
+                                </label>
+                            </div>
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="essential-cookies-2" name="essential" type="radio" value="no" checked="">
+                                <label class="govuk-label govuk-radios__label" for="essential-cookies-2">
+                                No
+                                </label>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            }
+
+            <button type="submit" class="govuk-button">
+                Confirm and send
+            </button>
+        </form>
+    }
+</section>

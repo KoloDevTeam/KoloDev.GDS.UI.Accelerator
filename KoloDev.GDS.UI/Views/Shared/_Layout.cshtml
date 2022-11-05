@@ -1,0 +1,145 @@
+﻿@using KoloDev.GDS.UI.BaseModels.Configuration
+@using KoloDev.GDS.UI.Configurators.Base
+@using Microsoft.Extensions.Options;
+@inject IOptions<AppSettings> AppSettings
+
+@{
+    var showBackLinkViewData = ViewData["BackLinkVisible"]?.ToString() ?? "false";
+    var showBackLink = bool.Parse(showBackLinkViewData);
+    var gdsJsEnabledViewData = ViewData["UseGdsJavascript"]?.ToString() ?? "false";
+    var gdsJsEnabled = bool.Parse(gdsJsEnabledViewData);
+    var title = ViewData["PageUserTitle"] ?? "";
+}
+
+<!DOCTYPE html>
+<html lang="en" class="govuk-template">
+
+<head>
+  <meta charset="utf-8">
+  <title>@title - GOV.UK @AppSettings.Value.ServiceName</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b0c0c">
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <link rel="shortcut icon" sizes="16x16 32x32 48x48" href="/assets/images/favicon.ico" type="image/x-icon">
+  <link rel="mask-icon" href="/assets/images/govuk-mask-icon.svg" color="#0b0c0c">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/govuk-apple-touch-icon-180x180.png">
+  <link rel="apple-touch-icon" sizes="167x167" href="/assets/images/govuk-apple-touch-icon-167x167.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/assets/images/govuk-apple-touch-icon-152x152.png">
+  <link rel="apple-touch-icon" href="/assets/images/govuk-apple-touch-icon.png">
+
+  <!--[if !IE 8]><!-->
+  <link href="/css/gds.min.css" rel="stylesheet">
+  <!--<![endif]-->
+
+  <!--[if IE 8]>
+    <link href="/css/gds-ie8.min.css" rel="stylesheet">
+  <![endif]-->
+
+  <!--[if lt IE 9]>
+    <script src="/js/html5shiv.min.js"></script>
+  <![endif]-->
+
+    @foreach(var styleSheet in AssetConfiguration.UserCssAssets)
+    {
+        <link href="@styleSheet.Location" rel="stylesheet">
+    }
+
+  <meta property="og:image" content="/assets/images/govuk-opengraph-image.png">
+</head>
+
+<body class="govuk-template__body">
+  <script asp-add-nonce>
+    document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');
+
+  </script>
+
+  <a href="#main-content" class="govuk-skip-link">Skip to main content</a>
+
+    @{
+        await Html.RenderPartialAsync("Partial/_LayoutHeader");
+    }
+
+  <div class="govuk-width-container">
+
+    @{
+        if (AppSettings.Value.ServicePhase.ShowPhaseBanner)
+        {
+            <div class="govuk-phase-banner">
+                <p class="govuk-phase-banner__content">
+                    <strong class="govuk-tag govuk-phase-banner__content__tag">
+                        @AppSettings.Value.ServicePhase.Phase
+                    </strong>
+                    <span class="govuk-phase-banner__text">
+                        @{
+                            if(AppSettings.Value.ServicePhase.FeedbackLink.ToString() != "about:blank")
+                            {
+                                @:This is a new service – your <a class="govuk-link" href="@AppSettings.Value.ServicePhase.FeedbackLink">feedback</a> will help us to improve it.
+                            }
+                            else
+                            {
+                                @:This is a new service – your feedback will help us to improve it.
+                            }
+                        }
+                    </span>
+                </p>
+            </div>
+        }
+    }
+
+    @{
+        if(showBackLink)
+        {
+            if (ViewData["BackLinkHref"] != null && ViewData["BackLinkHref"]?.ToString()?.Length > 0)
+            {
+                <a class="govuk-back-link" href="@ViewData["BackLinkHref"]">Back</a>
+            }
+            else
+            {
+                <a class="govuk-back-link" asp-controller="@ViewData["BackLinkController"]" asp-action="@ViewData["BackLinkAction"]">Back</a>
+            }
+        }
+    }
+
+    <main class="govuk-main-wrapper " id="main-content" role="main">
+      
+        @RenderBody()
+
+    </main>
+  </div>
+
+    @{
+        await Html.RenderPartialAsync("Partial/_LayoutFooter"); 
+    }
+
+  <script src="/js/gds.min.js" nws-csp-add-nonce="true"></script>
+    @foreach(var javaScript in AssetConfiguration.UserJsAssets)
+    {
+        if (!string.IsNullOrEmpty(javaScript.Integrity) && javaScript.CrossOrigin != CrossOriginType.None)
+        {
+            <script asp-add-nonce src="@javaScript.Location" crossorigin="@javaScript.CrossOrigin" integrity="@javaScript.Integrity"></script>
+        }
+        else if (!string.IsNullOrEmpty(javaScript.Integrity))
+        {
+            <script asp-add-nonce src="@javaScript.Location" integrity="@javaScript.Integrity"></script>
+        }
+        else if (javaScript.CrossOrigin != CrossOriginType.None)
+        {
+            <script asp-add-nonce src="@javaScript.Location" crossorigin="@javaScript.CrossOrigin"></script>
+        }
+        else
+        {
+            <script asp-add-nonce src="@javaScript.Location"></script>
+        }
+    }
+
+    @if (gdsJsEnabled)
+    {
+        <script asp-add-nonce>
+            window.GOVUKFrontend.initAll();
+        </script>
+    }
+</body>
+
+</html>

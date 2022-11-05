@@ -1,0 +1,14 @@
+[
+  {
+    "outputFileName": "wwwroot/js/gds.min.js",
+    "inputFiles": [
+      "wwwroot/gds/all.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/html5shiv.min.js",
+    "inputFiles": [
+      "wwwroot/js/html5shiv.js"
+    ]
+  }
+]

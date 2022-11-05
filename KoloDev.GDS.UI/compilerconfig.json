@@ -1,0 +1,10 @@
+﻿[
+  {
+    "outputFile": "wwwroot/css/gds.css",
+    "inputFile": "wwwroot/gds/all.scss"
+  },
+  {
+    "outputFile": "wwwroot/css/gds-ie8.css",
+    "inputFile": "wwwroot/gds/all-ie8.scss"
+  }
+]

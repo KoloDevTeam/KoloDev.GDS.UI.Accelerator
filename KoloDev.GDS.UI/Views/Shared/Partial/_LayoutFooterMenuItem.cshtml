@@ -1,0 +1,19 @@
+﻿@using KoloDev.GDS.UI.BaseModels.Configuration
+@model Menu
+
+@if (!string.IsNullOrEmpty(Model.Href) && Model.Href.Length > 0)
+{
+    <li class="govuk-footer__inline-list-item">
+        <a class="govuk-footer__link" href="@Model.Href">
+            @Model.Name
+        </a>
+    </li>
+}
+else
+{
+    <li class="govuk-footer__inline-list-item">
+        <a class="govuk-footer__link" asp-controller="@Model.Controller" asp-action="@Model.Action">
+            @Model.Name
+        </a>
+    </li>
+}

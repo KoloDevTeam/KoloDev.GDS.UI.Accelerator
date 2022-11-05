@@ -1,0 +1,25 @@
+﻿<section id="intro">
+    <gds-grid-row>
+        <gds-grid-column size="twoThirds">
+            <gds-heading size="xl">
+                Contact us
+            </gds-heading>
+        </gds-grid-column>
+    </gds-grid-row>
+</section>
+
+@if (ViewBag.content == null || ViewBag.content.Length == 0)
+{
+    <section id="content">
+        <gds-paragraph>
+            No view content has been provided for this page.<br />
+            To learn how to provide view content, refer to the user manual for the UI Accelerator.
+        </gds-paragraph>
+    </section>
+}
+else
+{
+    <section id="content">
+        @Html.Raw(ViewBag.content)
+    </section>
+}
